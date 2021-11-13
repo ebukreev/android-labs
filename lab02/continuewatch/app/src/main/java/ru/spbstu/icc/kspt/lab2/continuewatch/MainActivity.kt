@@ -4,10 +4,11 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import kotlinx.coroutines.*
+import java.util.concurrent.atomic.AtomicInteger
 
 class MainActivity : AppCompatActivity() {
-    private var secondsElapsed: Int = 0
-    private var isTextViewVisible = false
+    private var secondsElapsed = AtomicInteger()
     private lateinit var textSecondsElapsed: TextView
 
     private lateinit var sharedPref: SharedPreferences
@@ -18,43 +19,42 @@ class MainActivity : AppCompatActivity() {
         private const val NAME = "Continuewatch.MainActivity"
     }
 
-    private var backgroundThread = Thread {
-        while (true) {
-            if (isTextViewVisible) {
-                Thread.sleep(1000)
-                textSecondsElapsed.post {
-                    textSecondsElapsed.text = getString(R.string.seconds_elapsed, secondsElapsed++)
-                }
-            }
-        }
-    }
+    private lateinit var timeCounterScope: CoroutineScope
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         textSecondsElapsed = findViewById(R.id.textSecondsElapsed)
-        backgroundThread.start()
     }
 
     override fun onStart() {
-        sharedPref = getSharedPreferences(NAME, MODE_PRIVATE)
-        isTextViewVisible = true
-        setSecondsIfExists()
         super.onStart()
+        sharedPref = getSharedPreferences(NAME, MODE_PRIVATE)
+        setSecondsIfExists()
+        timeCounterScope = CoroutineScope(Job())
+        timeCounterScope.launch {
+            while (isActive) {
+                delay(1000)
+                textSecondsElapsed.post {
+                    textSecondsElapsed.text =
+                        getString(R.string.seconds_elapsed, secondsElapsed.incrementAndGet())
+                }
+            }
+        }
     }
 
     override fun onStop() {
-        isTextViewVisible = false
+        super.onStop()
         sharedPref.edit().apply {
-            putInt(SECONDS_ELAPSED, secondsElapsed)
+            putInt(SECONDS_ELAPSED, secondsElapsed.get())
             apply()
         }
-        super.onStop()
+        timeCounterScope.coroutineContext.cancel()
     }
 
     private fun setSecondsIfExists() {
         if (sharedPref.contains(SECONDS_ELAPSED)) {
-            secondsElapsed = sharedPref.getInt(SECONDS_ELAPSED, 0)
+            secondsElapsed.set(sharedPref.getInt(SECONDS_ELAPSED, 0))
         }
     }
 
