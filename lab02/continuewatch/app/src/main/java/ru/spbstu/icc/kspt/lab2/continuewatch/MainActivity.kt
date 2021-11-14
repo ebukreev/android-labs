@@ -4,6 +4,7 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.*
 import java.util.concurrent.atomic.AtomicInteger
 
@@ -19,7 +20,7 @@ class MainActivity : AppCompatActivity() {
         private const val NAME = "Continuewatch.MainActivity"
     }
 
-    private lateinit var timeCounterScope: CoroutineScope
+    private lateinit var timeCounterJob: Job
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,8 +32,7 @@ class MainActivity : AppCompatActivity() {
         super.onStart()
         sharedPref = getSharedPreferences(NAME, MODE_PRIVATE)
         setSecondsIfExists()
-        timeCounterScope = CoroutineScope(Job())
-        timeCounterScope.launch {
+        timeCounterJob = lifecycleScope.launch {
             while (isActive) {
                 delay(1000)
                 textSecondsElapsed.post {
@@ -49,7 +49,7 @@ class MainActivity : AppCompatActivity() {
             putInt(SECONDS_ELAPSED, secondsElapsed.get())
             apply()
         }
-        timeCounterScope.coroutineContext.cancel()
+        timeCounterJob.cancel()
     }
 
     private fun setSecondsIfExists() {
