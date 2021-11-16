@@ -14,13 +14,15 @@ class SecondActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binging = ActivitySecondBinding.inflate(layoutInflater)
         setContentView(binging.root)
-        binging.toFirst.setOnClickListener { finish() }
-        binging.toThird.setOnClickListener {
+        binging.bnToFirst.setOnClickListener { finish() }
+        binging.bnToThird.setOnClickListener {
+//            startActivity(Intent(this, ThirdActivity::class.java))
             startActivityForResult(Intent(this, ThirdActivity::class.java), code)
         }
-        binging.toAbout.setOnClickListener {
+        binging.aboutActivity.setOnClickListener {
             startActivity(Intent(this, AboutActivity::class.java))
         }
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -29,4 +31,6 @@ class SecondActivity : AppCompatActivity() {
             finish()
         }
     }
+
+    override fun onSupportNavigateUp() = true.also { finish() }
 }

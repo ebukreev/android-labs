@@ -16,13 +16,13 @@ class ThirdFragment : Fragment() {
     ): View {
         val binding = FragmentThirdBinding.inflate(layoutInflater)
         val navController = findNavController()
-        binding.toFirst.setOnClickListener {
+        binding.bnToFirst.setOnClickListener {
             navController.navigate(R.id.action_third_to_first)
         }
-        binding.toSecond.setOnClickListener {
+        binding.bnToSecond.setOnClickListener {
             navController.navigate(R.id.action_third_to_second)
         }
-        binding.toAbout.setOnClickListener {
+        binding.aboutActivity.setOnClickListener {
             toAboutActivity(requireActivity())
         }
 

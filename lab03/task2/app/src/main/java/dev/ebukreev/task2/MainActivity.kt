@@ -5,18 +5,21 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import dev.ebukreev.task2.databinding.ActivityFirstBinding
 
-class FirstActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity() {
     private lateinit var binging: ActivityFirstBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binging = ActivityFirstBinding.inflate(layoutInflater)
         setContentView(binging.root)
-        binging.toSecond.setOnClickListener {
+        binging.bnToSecond.setOnClickListener {
             startActivity(Intent(this, SecondActivity::class.java))
         }
-        binging.toAbout.setOnClickListener {
+        binging.aboutActivity.setOnClickListener {
             startActivity(Intent(this, AboutActivity::class.java))
         }
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
+
+    override fun onSupportNavigateUp() = true.also { finish() }
 }
