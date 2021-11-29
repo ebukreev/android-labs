@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">image-download-execution-service</string>
+    <string name="image">image</string>
+</resources>
