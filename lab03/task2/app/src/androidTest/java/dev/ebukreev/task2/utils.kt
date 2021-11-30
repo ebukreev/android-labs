@@ -16,9 +16,9 @@ import androidx.test.espresso.contrib.NavigationViewActions
 import androidx.test.espresso.matcher.ViewMatchers.*
 import org.junit.Assert
 
-private fun openAboutViaBottomNav() {
-    onView(withId(R.id.drawer_nav_view)).perform(click())
-}
+//private fun openAboutViaBottomNav() {
+//    onView(withId(R.id.aboutActivity)).perform(click())
+//}
 
 private fun openAboutViaDrawer() {
     // Open Drawer to click on navigation.

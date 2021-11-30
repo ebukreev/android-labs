@@ -5,7 +5,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import dev.ebukreev.task2.databinding.ActivityFirstBinding
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AbstractActivity() {
     private lateinit var binging: ActivityFirstBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -15,11 +15,6 @@ class MainActivity : AppCompatActivity() {
         binging.bnToSecond.setOnClickListener {
             startActivity(Intent(this, SecondActivity::class.java))
         }
-        binging.aboutActivity.setOnClickListener {
-            startActivity(Intent(this, AboutActivity::class.java))
-        }
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        binging.aboutActivity.setOnClickListener { goToAbout() }
     }
-
-    override fun onSupportNavigateUp() = true.also { finish() }
 }

@@ -10,7 +10,7 @@ import androidx.navigation.ui.R
 import androidx.navigation.ui.navigateUp
 import dev.ebukreev.task2.databinding.ActivityThirdBinding
 
-class ThirdActivity : AppCompatActivity() {
+class ThirdActivity : AbstractActivity() {
     private lateinit var binging: ActivityThirdBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -24,11 +24,7 @@ class ThirdActivity : AppCompatActivity() {
             finish()
         }
         binging.bnToSecond.setOnClickListener { finish() }
-        binging.aboutActivity.setOnClickListener {
-            startActivity(Intent(this, AboutActivity::class.java))
-        }
+        binging.aboutActivity.setOnClickListener { goToAbout() }
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
-
-    override fun onSupportNavigateUp() = true.also { finish() }
 }

@@ -6,7 +6,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import dev.ebukreev.task2.databinding.ActivitySecondBinding
 
-class SecondActivity : AppCompatActivity() {
+class SecondActivity : AbstractActivity() {
     private lateinit var binging: ActivitySecondBinding
     private val code = 0
 
@@ -19,9 +19,7 @@ class SecondActivity : AppCompatActivity() {
 //            startActivity(Intent(this, ThirdActivity::class.java))
             startActivityForResult(Intent(this, ThirdActivity::class.java), code)
         }
-        binging.aboutActivity.setOnClickListener {
-            startActivity(Intent(this, AboutActivity::class.java))
-        }
+        binging.aboutActivity.setOnClickListener { goToAbout() }
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
@@ -31,6 +29,4 @@ class SecondActivity : AppCompatActivity() {
             finish()
         }
     }
-
-    override fun onSupportNavigateUp() = true.also { finish() }
 }
