@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import dev.ebukreev.task5.databinding.FragmentFirstBinding
@@ -19,9 +20,7 @@ class FirstFragment : Fragment() {
         binding.bnToSecond.setOnClickListener {
             navController.navigate(R.id.action_first_to_second)
         }
-        binding.aboutActivity.setOnClickListener {
-            toAboutActivity(requireActivity())
-        }
+        (requireActivity() as MainActivity).setDisplayHomeAsUpEnabled(false)
 
         return binding.root
     }

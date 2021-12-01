@@ -4,6 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
     app:startDestination="@id/firstFragment">
+    <activity
+        android:id="@+id/aboutActivity"
+        android:name="dev.ebukreev.task5.AboutActivity"
+        android:label="about_activity"
+        tools:layout="@layout/activity_about"
+        app:action="@+id/action_about" />
+
     <fragment
         android:id="@+id/firstFragment"
         android:name="dev.ebukreev.task5.FirstFragment"

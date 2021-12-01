@@ -22,9 +22,7 @@ class ThirdFragment : Fragment() {
         binding.bnToSecond.setOnClickListener {
             navController.navigate(R.id.action_third_to_second)
         }
-        binding.aboutActivity.setOnClickListener {
-            toAboutActivity(requireActivity())
-        }
+        (requireActivity() as MainActivity).setDisplayHomeAsUpEnabled(true)
 
         return binding.root
     }
