@@ -27,10 +27,8 @@ class MainActivity : AppCompatActivity() {
         lifecycleScope.launchWhenStarted {
             while (isActive) {
                 delay(1000)
-                textSecondsElapsed.post {
                     textSecondsElapsed.text =
                         getString(R.string.seconds_elapsed, secondsElapsed.incrementAndGet())
-                }
             }
         }
     }
