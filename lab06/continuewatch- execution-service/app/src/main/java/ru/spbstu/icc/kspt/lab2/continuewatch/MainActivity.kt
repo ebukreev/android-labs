@@ -9,6 +9,7 @@ import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.*
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
+import java.util.concurrent.Future
 import java.util.concurrent.atomic.AtomicInteger
 
 class MainActivity : AppCompatActivity() {
@@ -23,7 +24,7 @@ class MainActivity : AppCompatActivity() {
         private const val NAME = "Continuewatch.MainActivity"
     }
 
-    private lateinit var executorService: ExecutorService
+    private lateinit var counterFuture: Future<Unit>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,14 +36,12 @@ class MainActivity : AppCompatActivity() {
         super.onStart()
         sharedPref = getSharedPreferences(NAME, MODE_PRIVATE)
         setSecondsIfExists()
-        executorService = Executors.newSingleThreadExecutor().apply {
-            execute {
-                while (!executorService.isShutdown) {
-                    Thread.sleep(1000)
-                    textSecondsElapsed.post {
-                        textSecondsElapsed.text =
-                            getString(R.string.seconds_elapsed, secondsElapsed.incrementAndGet())
-                    }
+        counterFuture = continueWatchApplication.executorService.submit<Unit> {
+            while (true) {
+                Thread.sleep(1000)
+                textSecondsElapsed.post {
+                    textSecondsElapsed.text =
+                        getString(R.string.seconds_elapsed, secondsElapsed.incrementAndGet())
                 }
             }
         }
@@ -54,7 +53,7 @@ class MainActivity : AppCompatActivity() {
             putInt(SECONDS_ELAPSED, secondsElapsed.get())
             apply()
         }
-        executorService.shutdown()
+        counterFuture.cancel(true)
     }
 
     private fun setSecondsIfExists() {
